@@ -5,6 +5,10 @@ import Home from "@pages/HomePage";
 import LegalLayout from "@components/templates/LegalLayout";
 import PrivacyPage from "@/pages/PrivacyPage";
 import TermsPage from "@/pages/TermsPage";
+import ProtectedRoute from "@components/templates/ProtectedRoute";
+import OnboardingPage from "@/pages/OnboardingPage";
+import DashboardPage from "@/pages/DashboardPage";
+import OnboardingLayout from "@components/templates/OnboardingLayout";
 
 const routes: RouteObject[] = [
   {
@@ -28,6 +32,25 @@ const routes: RouteObject[] = [
       {
         path: "terms",
         element: <TermsPage />,
+      },
+    ],
+  },
+  {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: "onboarding",
+        element: <OnboardingLayout />,
+        children: [
+          {
+            index: true,
+            element: <OnboardingPage />,
+          },
+        ],
+      },
+      {
+        path: "dashboard",
+        element: <DashboardPage />,
       },
     ],
   },

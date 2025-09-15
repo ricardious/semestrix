@@ -1,0 +1,269 @@
+{
+  "metadata": {
+    "semester": 2,
+    "semester_name": "Segundo Semestre",
+    "scraped_at": "2025-07-08 03:13:55 UTC",
+    "total_courses": 1545
+  },
+  "courses": [
+    {
+      "course_code": "MAT201",
+      "course_name": "MATEMATICA BASICA II",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "T-1",
+      "classroom": "201",
+      "start_time": "08:00",
+      "end_time": "09:30",
+      "days": "LU  MI  VI",
+      "professor": "DR. GARCIA LOPEZ",
+      "teaching_assistant": "ASISTENTE MATEMATICAS 1",
+      "semester": 2,
+      "restrictions": [
+        "Prerequisito: MAT101"
+      ]
+    },
+    {
+      "course_code": "MAT201",
+      "course_name": "MATEMATICA BASICA II",
+      "section": "002",
+      "mode": "PRESENCIAL",
+      "building": "T-1",
+      "classroom": "203",
+      "start_time": "10:00",
+      "end_time": "11:30",
+      "days": "MA  JU",
+      "professor": "DRA. SANCHEZ MORALES",
+      "teaching_assistant": "ASISTENTE MATEMATICAS 2",
+      "semester": 2,
+      "restrictions": [
+        "Prerequisito: MAT101"
+      ]
+    },
+    {
+      "course_code": "FIS201",
+      "course_name": "FISICA I",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "T-2",
+      "classroom": "101",
+      "start_time": "10:00",
+      "end_time": "11:30",
+      "days": "LU  MI  VI",
+      "professor": "DR. RODRIGUEZ PEREZ",
+      "teaching_assistant": "ASISTENTE FISICA 1",
+      "semester": 2,
+      "restrictions": [
+        "Prerequisito: FIS101"
+      ]
+    },
+    {
+      "course_code": "FIS201",
+      "course_name": "FISICA I",
+      "section": "002",
+      "mode": "PRESENCIAL",
+      "building": "T-2",
+      "classroom": "103",
+      "start_time": "14:00",
+      "end_time": "15:30",
+      "days": "MA  JU",
+      "professor": "DRA. MARTINEZ SILVA",
+      "teaching_assistant": "ASISTENTE FISICA 2",
+      "semester": 2,
+      "restrictions": [
+        "Prerequisito: FIS101"
+      ]
+    },
+    {
+      "course_code": "QUI201",
+      "course_name": "QUIMICA ORGANICA",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "LAB",
+      "classroom": "201",
+      "start_time": "14:00",
+      "end_time": "15:30",
+      "days": "LU  MI  VI",
+      "professor": "DR. LOPEZ MORALES",
+      "teaching_assistant": "ASISTENTE QUIMICA 1",
+      "semester": 2,
+      "restrictions": [
+        "Prerequisito: QUI101",
+        "Laboratorio requerido"
+      ]
+    },
+    {
+      "course_code": "QUI201",
+      "course_name": "QUIMICA ORGANICA",
+      "section": "002",
+      "mode": "PRESENCIAL",
+      "building": "LAB",
+      "classroom": "203",
+      "start_time": "08:00",
+      "end_time": "09:30",
+      "days": "MA  JU",
+      "professor": "DRA. FERNANDEZ CASTRO",
+      "teaching_assistant": "ASISTENTE QUIMICA 2",
+      "semester": 2,
+      "restrictions": [
+        "Prerequisito: QUI101",
+        "Laboratorio requerido"
+      ]
+    },
+    {
+      "course_code": "ING201",
+      "course_name": "DIBUJO DE INGENIERIA",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "T-4",
+      "classroom": "101",
+      "start_time": "16:00",
+      "end_time": "17:30",
+      "days": "MA  JU",
+      "professor": "ING. MORALES DIAZ",
+      "teaching_assistant": "ASISTENTE DIBUJO 1",
+      "semester": 2,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    },
+    {
+      "course_code": "ING201",
+      "course_name": "DIBUJO DE INGENIERIA",
+      "section": "002",
+      "mode": "PRESENCIAL",
+      "building": "T-4",
+      "classroom": "103",
+      "start_time": "10:00",
+      "end_time": "12:00",
+      "days": "SA",
+      "professor": "ING. VARGAS RUIZ",
+      "teaching_assistant": "ASISTENTE DIBUJO 2",
+      "semester": 2,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    },
+    {
+      "course_code": "PSI101",
+      "course_name": "PSICOLOGIA",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "T-3",
+      "classroom": "201",
+      "start_time": "18:00",
+      "end_time": "19:30",
+      "days": "LU  MI",
+      "professor": "LIC. GONZALEZ TORRES",
+      "teaching_assistant": "ASISTENTE PSICOLOGIA 1",
+      "semester": 2,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    },
+    {
+      "course_code": "PSI101",
+      "course_name": "PSICOLOGIA",
+      "section": "002",
+      "mode": "PRESENCIAL",
+      "building": "T-3",
+      "classroom": "203",
+      "start_time": "18:00",
+      "end_time": "19:30",
+      "days": "MA  JU",
+      "professor": "DRA. SILVA HERRERA",
+      "teaching_assistant": "ASISTENTE PSICOLOGIA 2",
+      "semester": 2,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    },
+    {
+      "course_code": "IPC201",
+      "course_name": "INTRODUCCION A LA COMPUTACION Y PROGRAMACION II",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "LAB-INFO",
+      "classroom": "1",
+      "start_time": "12:00",
+      "end_time": "13:30",
+      "days": "LU  MI  VI",
+      "professor": "ING. CASTRO LOPEZ",
+      "teaching_assistant": "ASISTENTE PROGRAMACION 1",
+      "semester": 2,
+      "restrictions": [
+        "Prerequisito: IPC101",
+        "Laboratorio de computación requerido"
+      ]
+    },
+    {
+      "course_code": "IPC201",
+      "course_name": "INTRODUCCION A LA COMPUTACION Y PROGRAMACION II",
+      "section": "002",
+      "mode": "PRESENCIAL",
+      "building": "LAB-INFO",
+      "classroom": "2",
+      "start_time": "12:00",
+      "end_time": "13:30",
+      "days": "MA  JU",
+      "professor": "ING. RAMIREZ SILVA",
+      "teaching_assistant": "ASISTENTE PROGRAMACION 2",
+      "semester": 2,
+      "restrictions": [
+        "Prerequisito: IPC101",
+        "Laboratorio de computación requerido"
+      ]
+    },
+    {
+      "course_code": "MAT301",
+      "course_name": "MATEMATICA INTERMEDIA I",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "T-1",
+      "classroom": "301",
+      "start_time": "16:00",
+      "end_time": "17:30",
+      "days": "LU  MI  VI",
+      "professor": "DR. MENDOZA VARGAS",
+      "teaching_assistant": "ASISTENTE MATEMATICAS 3",
+      "semester": 2,
+      "restrictions": [
+        "Prerequisito: MAT201"
+      ]
+    },
+    {
+      "course_code": "FIS301",
+      "course_name": "FISICA II",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "T-2",
+      "classroom": "201",
+      "start_time": "16:00",
+      "end_time": "17:30",
+      "days": "MA  JU",
+      "professor": "DR. PEREZ AGUILAR",
+      "teaching_assistant": "ASISTENTE FISICA 3",
+      "semester": 2,
+      "restrictions": [
+        "Prerequisito: FIS201"
+      ]
+    },
+    {
+      "course_code": "ECO101",
+      "course_name": "ECONOMIA",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "AUD",
+      "classroom": "201",
+      "start_time": "18:00",
+      "end_time": "21:00",
+      "days": "VI",
+      "professor": "LIC. JIMENEZ CASTRO",
+      "teaching_assistant": "ASISTENTE ECONOMIA 1",
+      "semester": 2,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    }
+  ]
+}
