@@ -1,0 +1,231 @@
+{
+  "metadata": {
+    "semester": 1,
+    "semester_name": "Primer Semestre",
+    "scraped_at": "2025-07-08 03:13:55 UTC",
+    "total_courses": 856
+  },
+  "courses": [
+    {
+      "course_code": "MAT101",
+      "course_name": "MATEMATICA BASICA I",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "T-1",
+      "classroom": "201",
+      "start_time": "08:00",
+      "end_time": "09:30",
+      "days": "LU  MI  VI",
+      "professor": "DR. GARCIA LOPEZ",
+      "teaching_assistant": "ASISTENTE MATEMATICAS 1",
+      "semester": 1,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    },
+    {
+      "course_code": "MAT101",
+      "course_name": "MATEMATICA BASICA I",
+      "section": "002",
+      "mode": "PRESENCIAL",
+      "building": "T-1",
+      "classroom": "203",
+      "start_time": "10:00",
+      "end_time": "11:30",
+      "days": "MA  JU",
+      "professor": "DR. GARCIA LOPEZ",
+      "teaching_assistant": "ASISTENTE MATEMATICAS 2",
+      "semester": 1,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    },
+    {
+      "course_code": "FIS101",
+      "course_name": "FISICA BASICA",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "T-2",
+      "classroom": "101",
+      "start_time": "10:00",
+      "end_time": "11:30",
+      "days": "LU  MI  VI",
+      "professor": "DRA. MARTINEZ SILVA",
+      "teaching_assistant": "ASISTENTE FISICA 1",
+      "semester": 1,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    },
+    {
+      "course_code": "FIS101",
+      "course_name": "FISICA BASICA",
+      "section": "002",
+      "mode": "PRESENCIAL",
+      "building": "T-2",
+      "classroom": "103",
+      "start_time": "14:00",
+      "end_time": "15:30",
+      "days": "MA  JU",
+      "professor": "DR. RODRIGUEZ PEREZ",
+      "teaching_assistant": "ASISTENTE FISICA 2",
+      "semester": 1,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    },
+    {
+      "course_code": "QUI101",
+      "course_name": "QUIMICA GENERAL",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "LAB",
+      "classroom": "201",
+      "start_time": "14:00",
+      "end_time": "15:30",
+      "days": "LU  MI  VI",
+      "professor": "DRA. FERNANDEZ CASTRO",
+      "teaching_assistant": "ASISTENTE QUIMICA 1",
+      "semester": 1,
+      "restrictions": [
+        "Laboratorio requerido"
+      ]
+    },
+    {
+      "course_code": "QUI101",
+      "course_name": "QUIMICA GENERAL",
+      "section": "002",
+      "mode": "PRESENCIAL",
+      "building": "LAB",
+      "classroom": "203",
+      "start_time": "08:00",
+      "end_time": "09:30",
+      "days": "MA  JU",
+      "professor": "DR. LOPEZ MORALES",
+      "teaching_assistant": "ASISTENTE QUIMICA 2",
+      "semester": 1,
+      "restrictions": [
+        "Laboratorio requerido"
+      ]
+    },
+    {
+      "course_code": "ING101",
+      "course_name": "ORIENTACION E INTRODUCCION A LA INGENIERIA",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "AUD",
+      "classroom": "101",
+      "start_time": "08:00",
+      "end_time": "10:00",
+      "days": "SA",
+      "professor": "ING. VARGAS RUIZ",
+      "teaching_assistant": "COORDINADOR INGENIERIA",
+      "semester": 1,
+      "restrictions": [
+        "Solo estudiantes de nuevo ingreso"
+      ]
+    },
+    {
+      "course_code": "LEN101",
+      "course_name": "LENGUAJE",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "T-3",
+      "classroom": "101",
+      "start_time": "16:00",
+      "end_time": "17:30",
+      "days": "MA  JU",
+      "professor": "LIC. HERRERA GONZALEZ",
+      "teaching_assistant": "ASISTENTE LENGUAJE 1",
+      "semester": 1,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    },
+    {
+      "course_code": "LEN101",
+      "course_name": "LENGUAJE",
+      "section": "002",
+      "mode": "PRESENCIAL",
+      "building": "T-3",
+      "classroom": "103",
+      "start_time": "16:00",
+      "end_time": "17:00",
+      "days": "LU  MI  VI",
+      "professor": "LIC. TORRES JIMENEZ",
+      "teaching_assistant": "ASISTENTE LENGUAJE 2",
+      "semester": 1,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    },
+    {
+      "course_code": "IPC101",
+      "course_name": "INTRODUCCION A LA COMPUTACION Y PROGRAMACION I",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "LAB-INFO",
+      "classroom": "1",
+      "start_time": "12:00",
+      "end_time": "13:30",
+      "days": "LU  MI  VI",
+      "professor": "ING. RAMIREZ SILVA",
+      "teaching_assistant": "ASISTENTE PROGRAMACION 1",
+      "semester": 1,
+      "restrictions": [
+        "Laboratorio de computación requerido"
+      ]
+    },
+    {
+      "course_code": "IPC101",
+      "course_name": "INTRODUCCION A LA COMPUTACION Y PROGRAMACION I",
+      "section": "002",
+      "mode": "PRESENCIAL",
+      "building": "LAB-INFO",
+      "classroom": "2",
+      "start_time": "12:00",
+      "end_time": "13:30",
+      "days": "MA  JU",
+      "professor": "ING. CASTRO LOPEZ",
+      "teaching_assistant": "ASISTENTE PROGRAMACION 2",
+      "semester": 1,
+      "restrictions": [
+        "Laboratorio de computación requerido"
+      ]
+    },
+    {
+      "course_code": "EST101",
+      "course_name": "ESTADISTICA I",
+      "section": "001",
+      "mode": "PRESENCIAL",
+      "building": "T-1",
+      "classroom": "301",
+      "start_time": "18:00",
+      "end_time": "19:30",
+      "days": "LU  MI  VI",
+      "professor": "DR. MENDOZA VARGAS",
+      "teaching_assistant": "ASISTENTE ESTADISTICA 1",
+      "semester": 1,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    },
+    {
+      "course_code": "EST101",
+      "course_name": "ESTADISTICA I",
+      "section": "002",
+      "mode": "PRESENCIAL",
+      "building": "T-1",
+      "classroom": "303",
+      "start_time": "18:00",
+      "end_time": "19:30",
+      "days": "MA  JU",
+      "professor": "DRA. AGUILAR HERRERA",
+      "teaching_assistant": "ASISTENTE ESTADISTICA 2",
+      "semester": 1,
+      "restrictions": [
+        "Sin restricciones"
+      ]
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import { Img } from "react-image";
 import GradientBackdrop from "@atoms/GradientBackdrop";
 import SvgIcon from "@atoms/SvgIcon";
 import ThemeToggle from "@molecules/ThemeToggle";
+import AuthModal from "@organisms/AuthModal";
 import routesConstants from "@lib/constants/routeConstants";
 import { useThemeContext } from "@context/ThemeContext";
 import { menuItems } from "@lib/constants/menuItems";
@@ -64,9 +65,9 @@ const Header: React.FC = () => {
         >
           <SvgIcon name="github" size="md" className="text-current" />
         </Link>
-        <Link
-          to={routesConstants.ROOT}
-          className="hidden lg:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 transition-all duration-300 hover:border-gray-400 hover:shadow-lg hover:scale-105 active:scale-95 group"
+        <label
+          htmlFor="auth-modal"
+          className="hidden lg:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 transition-all duration-300 hover:border-gray-400 hover:shadow-lg hover:scale-105 active:scale-95 group cursor-pointer"
         >
           Ingresar
           <SvgIcon
@@ -74,7 +75,7 @@ const Header: React.FC = () => {
             size="sm"
             className="text-current transition-transform duration-300 group-hover:scale-110"
           />
-        </Link>
+        </label>
         <button className="block md:hidden ml-3" onClick={openMenu}>
           <SvgIcon name="menu" size="md" className="text-current" />
         </button>
@@ -95,7 +96,19 @@ const Header: React.FC = () => {
             </a>
           </li>
         ))}
+        <li className="mt-4 pt-4 border-t border-white/20">
+          <label
+            htmlFor="auth-modal"
+            className="flex items-center gap-3 text-white font-semibold cursor-pointer"
+          >
+            Ingresar
+            <SvgIcon name="arrow-up-right" size="sm" className="text-white" />
+          </label>
+        </li>
       </ul>
+
+      {/* Auth Modal */}
+      <AuthModal />
     </nav>
   );
 };
