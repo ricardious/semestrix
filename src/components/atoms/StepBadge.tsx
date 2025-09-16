@@ -1,5 +1,3 @@
-import React from "react";
-
 interface StepBadgeProps {
   stepNumber: number;
   variant?: "primary" | "blue" | "purple" | "green";

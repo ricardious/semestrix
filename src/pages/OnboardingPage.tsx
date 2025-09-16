@@ -3,12 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useCurrentUser } from "@/services/auth/queries";
 import LoadingSpinner from "@atoms/LoadingSpinner";
 import { AnimatePresence } from "framer-motion";
-import {
-  getPensum,
-  getCareers,
-  Career,
-  Course,
-} from "@/services/academic/api";
+import { getPensum, getCareers, Career, Course } from "@/services/academic/api";
 import { saveUserProfile, getUserProfile } from "@/services/firebase/profiles";
 import OnboardingHeader from "@molecules/OnboardingHeader";
 import ProgressBar from "@molecules/ProgressBar";
@@ -23,7 +18,6 @@ interface OnboardingData {
   completedCourses: string[];
 }
 
-// Definir el tipo de usuario de Firebase
 interface FirebaseUser {
   uid: string;
   displayName?: string | null;
@@ -58,19 +52,15 @@ const OnboardingPage: React.FC = () => {
 
       try {
         const userProfile = await getUserProfile(user.uid);
-        
-        // Si el usuario ya tiene un perfil y completó el onboarding, redirigir al dashboard
+
         if (userProfile && userProfile.onboarding_completed) {
-          console.log('Usuario ya completó el onboarding, redirigiendo al dashboard');
-          navigate('/dashboard', { replace: true });
+          navigate("/dashboard", { replace: true });
           return;
         }
 
-        // Si no ha completado el onboarding, continuar con la carga normal
         loadCareers();
       } catch (error) {
-        console.error('Error verificando estado del onboarding:', error);
-        // En caso de error, continuar con el onboarding normal
+        console.error("Error verificando estado del onboarding:", error);
         loadCareers();
       }
     };
@@ -125,7 +115,6 @@ const OnboardingPage: React.FC = () => {
     const newFormData = { ...formData, ...updates };
     setFormData(newFormData);
 
-    // Si se actualiza el año de inicio, recargar el pensum
     if (updates.startYear && newFormData.career) {
       loadPensum(newFormData.career, newFormData.startYear);
     }
@@ -134,18 +123,18 @@ const OnboardingPage: React.FC = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      // Verificar que el usuario esté autenticado
       if (!user?.uid) {
-        throw new Error('Usuario no autenticado');
+        throw new Error("Usuario no autenticado");
       }
 
-      const selectedCareer = availableCareers.find(c => c.id === formData.career);
-      
-      // Guardar en Firebase
+      const selectedCareer = availableCareers.find(
+        (c) => c.id === formData.career
+      );
+
       await saveUserProfile({
-        uid: user.uid, // Ahora sin (user as any)
+        uid: user.uid,
         career_id: formData.career,
-        career_name: selectedCareer?.name || '',
+        career_name: selectedCareer?.name || "",
         start_year: formData.startYear,
         completed_courses: formData.completedCourses,
         onboarding_completed: true,
@@ -192,9 +181,9 @@ const OnboardingPage: React.FC = () => {
   return (
     <>
       <OnboardingHeader
-        userName={user?.displayName?.split(" ")[0] || "Usuario"} // Sin (user as any)
+        userName={user?.displayName?.split(" ")[0] || "Usuario"}
         stepTitle={getStepTitle()}
-        userAvatar={user?.photoURL || undefined} // Sin (user as any)
+        userAvatar={user?.photoURL || undefined}
       />
 
       <ProgressBar

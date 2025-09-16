@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useCurrentUser } from "@/services/auth/queries";
+import { useState, useEffect } from "react";
+import { useCurrentUser } from "@services/auth/queries";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "@atoms/LoadingSpinner";
-import { getUserProfile } from "@/services/firebase/profiles";
+import {
+  getUserProfile,
+  updateUserProfile,
+} from "@/services/firebase/profiles";
 import { getPensum, Course } from "@/services/academic/api";
 import DashboardHeader from "@organisms/DashboardHeader";
 import PensumViewer from "@organisms/PensumViewer";
@@ -32,34 +35,37 @@ const DashboardPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [pensum, setPensum] = useState<Course[]>([]);
-  const [activeTab, setActiveTab] = useState<'pensum' | 'schedule'>('pensum');
+  const [activeTab, setActiveTab] = useState<"pensum" | "schedule">("pensum");
   const [loadingPensum, setLoadingPensum] = useState(false);
 
   useEffect(() => {
     const loadUserData = async () => {
       if (!user?.uid) {
-        navigate('/onboarding');
+        navigate("/onboarding");
         return;
       }
 
       try {
         // Cargar perfil del usuario
         const profile = await getUserProfile(user.uid);
-        
+
         if (!profile || !profile.onboarding_completed) {
-          navigate('/onboarding');
+          navigate("/onboarding");
           return;
         }
 
         setUserProfile(profile);
-        
+
         // Cargar pensum
         setLoadingPensum(true);
-        const pensumData = await getPensum(profile.career_id, profile.start_year);
+        const pensumData = await getPensum(
+          profile.career_id,
+          profile.start_year
+        );
         setPensum(pensumData);
       } catch (error) {
-        console.error('Error cargando datos del usuario:', error);
-        navigate('/onboarding');
+        console.error("Error cargando datos del usuario:", error);
+        navigate("/onboarding");
       } finally {
         setLoading(false);
         setLoadingPensum(false);
@@ -68,11 +74,9 @@ const DashboardPage: React.FC = () => {
 
     loadUserData();
   }, [user, navigate]);
-
-  // Calcular semestre actual basado en la fecha
   const getCurrentSemester = () => {
     const now = new Date();
-    const month = now.getMonth() + 1; // getMonth() es 0-based
+    const month = now.getMonth() + 1;
     return month >= 1 && month <= 6 ? 1 : 2;
   };
 
@@ -103,7 +107,7 @@ const DashboardPage: React.FC = () => {
             Parece que no has completado el proceso de configuración inicial.
           </p>
           <button
-            onClick={() => navigate('/onboarding')}
+            onClick={() => navigate("/onboarding")}
             className="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity"
           >
             Completar configuración
@@ -112,6 +116,30 @@ const DashboardPage: React.FC = () => {
       </div>
     );
   }
+
+  const handleCoursesUpdate = async (newCompletedCourses: string[]) => {
+    try {
+      if (!user?.uid) return;
+
+      // Actualizar en Firebase
+      await updateUserProfile(user.uid, {
+        completed_courses: newCompletedCourses,
+      });
+
+      // Actualizar estado local
+      setUserProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              completed_courses: newCompletedCourses,
+            }
+          : null
+      );
+    } catch (error) {
+      console.error("Error actualizando cursos:", error);
+      // Aquí podrías mostrar un toast o notificación de error
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -126,21 +154,21 @@ const DashboardPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex space-x-8">
             <button
-              onClick={() => setActiveTab('pensum')}
+              onClick={() => setActiveTab("pensum")}
               className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === 'pensum'
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300'
+                activeTab === "pensum"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300"
               }`}
             >
               Mi Pensum
             </button>
             <button
-              onClick={() => setActiveTab('schedule')}
+              onClick={() => setActiveTab("schedule")}
               className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === 'schedule'
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300'
+                activeTab === "schedule"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300"
               }`}
             >
               Generar Horario
@@ -151,15 +179,15 @@ const DashboardPage: React.FC = () => {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === 'pensum' && (
+        {activeTab === "pensum" && (
           <PensumViewer
             pensum={pensum}
             completedCourses={userProfile.completed_courses}
             loading={loadingPensum}
+            onCoursesUpdate={handleCoursesUpdate}
           />
         )}
-
-        {activeTab === 'schedule' && (
+        {activeTab === "schedule" && (
           <ScheduleGenerator
             pensum={pensum}
             completedCourses={userProfile.completed_courses}

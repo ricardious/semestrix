@@ -1,4 +1,3 @@
-import React from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "@lib/firebase/config";
 import { useNavigate } from "react-router-dom";
@@ -76,7 +75,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   const currentAcademicYear = calculateCurrentAcademicYear();
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+    <header className="bg-white/70 dark:bg-gray-800/70 shadow-sm border-b border-gray-200 dark:border-gray-700 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-4">

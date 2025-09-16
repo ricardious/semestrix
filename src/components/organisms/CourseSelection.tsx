@@ -1,4 +1,3 @@
-import React from "react";
 import LoadingSpinner from "@atoms/LoadingSpinner";
 import SvgIcon from "@atoms/SvgIcon";
 import SemesterCourses from "@molecules/SemesterCourses";
@@ -34,7 +33,6 @@ const CourseSelection: React.FC<CourseSelectionProps> = ({
   onSubmit,
   loading,
 }) => {
-  // Agrupar cursos por semestre
   const coursesBySemester = pensum.reduce((acc, course) => {
     if (!acc[course.semester]) {
       acc[course.semester] = [];
@@ -48,7 +46,6 @@ const CourseSelection: React.FC<CourseSelectionProps> = ({
   );
 
   const handleCourseToggle = (courseId: string) => {
-    // Buscar el curso para obtener su código
     const course = pensum.find((c) => c.id === courseId);
     if (!course) return;
 
@@ -93,26 +90,26 @@ const CourseSelection: React.FC<CourseSelectionProps> = ({
       onFormUpdate({ completedCourses: updatedCourses });
     }
   };
-  
+
   return (
-    <div className="max-w-5xl mx-auto">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-10">
-        <div className="mb-8">
-          <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 lg:p-10">
+        <div className="mb-6 sm:mb-8">
+          <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3 leading-tight">
             Selecciona las materias que ya has completado
           </h3>
-          <p className="text-gray-600 dark:text-gray-300 text-lg">
+          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base lg:text-lg leading-relaxed">
             Esto nos ayuda a personalizar tu experiencia y mostrarte el
             contenido más relevante.
           </p>
         </div>
 
         {loadingPensum ? (
-          <div className="flex justify-center py-8">
+          <div className="flex justify-center py-8 sm:py-12">
             <LoadingSpinner size="md" />
           </div>
         ) : (
-          <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="space-y-4 sm:space-y-6 max-h-[50vh] sm:max-h-[55vh] lg:max-h-[60vh] overflow-y-auto pr-1 sm:pr-2 custom-scrollbar">
             {Array.from({ length: totalSemesters }, (_, i) => i + 1).map(
               (semester) => (
                 <SemesterCourses
@@ -130,10 +127,11 @@ const CourseSelection: React.FC<CourseSelectionProps> = ({
           </div>
         )}
 
-        <div className="flex space-x-6 mt-10">
+        {/* Botones responsive */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-6 mt-6 sm:mt-8 lg:mt-10">
           <button
             onClick={onBack}
-            className="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-4 px-8 rounded-xl font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200 flex items-center justify-center space-x-2 text-lg"
+            className="w-full sm:flex-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 sm:py-4 px-6 sm:px-8 rounded-lg sm:rounded-xl font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200 flex items-center justify-center space-x-2 text-base sm:text-lg order-2 sm:order-1"
           >
             <SvgIcon name="arrow-left" size="sm" />
             <span>Atrás</span>
@@ -141,16 +139,20 @@ const CourseSelection: React.FC<CourseSelectionProps> = ({
           <button
             onClick={onSubmit}
             disabled={loading}
-            className="flex-1 bg-gradient-to-r from-primary to-secondary text-white py-4 px-8 rounded-xl font-semibold hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 text-lg"
+            className="w-full sm:flex-1 bg-gradient-to-r from-primary to-secondary text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg sm:rounded-xl font-semibold hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 text-base sm:text-lg order-1 sm:order-2"
           >
             {loading ? (
               <>
                 <LoadingSpinner size="sm" />
-                <span>Configurando...</span>
+                <span className="hidden xs:inline">Configurando...</span>
+                <span className="xs:hidden">Configurando...</span>
               </>
             ) : (
               <>
-                <span>Finalizar configuración</span>
+                <span className="hidden xs:inline">
+                  Finalizar configuración
+                </span>
+                <span className="xs:hidden">Finalizar</span>
                 <SvgIcon name="check" size="sm" />
               </>
             )}

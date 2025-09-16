@@ -3,7 +3,7 @@ import SvgIcon from "@atoms/SvgIcon";
 interface OnboardingHeaderProps {
   userName: string;
   stepTitle: string;
-  userAvatar?: string; // Optional avatar URL
+  userAvatar?: string;
 }
 
 const OnboardingHeader: React.FC<OnboardingHeaderProps> = ({
@@ -21,9 +21,9 @@ const OnboardingHeader: React.FC<OnboardingHeaderProps> = ({
               alt={`Foto de perfil de ${userName}`}
               className="w-16 h-16 object-cover rounded-full"
               onError={(e) => {
-                console.log('Error loading image:', userAvatar);
-                e.currentTarget.style.display = 'none';
-                e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                console.log("Error loading image:", userAvatar);
+                e.currentTarget.style.display = "none";
+                e.currentTarget.nextElementSibling?.classList.remove("hidden");
               }}
             />
           ) : (

@@ -1,4 +1,3 @@
-// lib/types/auth.ts
 export interface AuthUser {
   uid: string;
   email: string | null;
@@ -16,7 +15,7 @@ export interface AuthContextType {
   logout: () => Promise<void>;
 }
 
-export type AuthProvider = 'google' | 'github';
+export type AuthProvider = "google" | "github";
 
 export interface LoginButtonProps {
   provider: AuthProvider;

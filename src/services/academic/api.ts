@@ -92,7 +92,6 @@ export const getPensum = async (
   // PostgREST devuelve directamente un array
   const courses = response;
 
-  // Transformar la respuesta al formato Course
   const transformedCourses: Course[] = courses.map((course: any, index: number) => ({
     id: course.curriculum_course_id?.toString() || `${careerId}-${index}`,
     code: course.course_code,

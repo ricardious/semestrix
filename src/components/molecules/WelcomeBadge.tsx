@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { slideInFromTop } from "@lib/helpers/motion";
 import SvgIcon from "@components/atoms/SvgIcon";

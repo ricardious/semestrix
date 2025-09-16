@@ -1,7 +1,6 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { Img } from "react-image";
-import GradientBackdrop from "@atoms/GradientBackdrop";
 import SvgIcon from "@atoms/SvgIcon";
 import ThemeToggle from "@molecules/ThemeToggle";
 import AuthModal from "@organisms/AuthModal";
@@ -27,7 +26,6 @@ const Header: React.FC = () => {
 
   return (
     <nav className="w-full fixed px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[8%] 2xl:px-[12%] py-3 sm:py-4 flex justify-between items-center z-50">
-      <GradientBackdrop />
       <Link to={routesConstants.HOME} className="flex items-center z-[1] group">
         <Img
           src="/icons/favicon.svg"
