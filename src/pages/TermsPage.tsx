@@ -28,13 +28,11 @@ const TermsPage = () => {
             <p>{TERMS_PAGE_INFO.introText}</p>
           </LegalIntroCard>
 
-          {/* Secciones */}
           {TERMS_SECTIONS.map((section, sectionIndex) => (
             <LegalSection
               key={sectionIndex}
               title={section.title}
               content={section.content}
-              delay={0.4 + sectionIndex * 0.05}
             />
           ))}
 

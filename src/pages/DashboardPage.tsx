@@ -46,9 +46,10 @@ const DashboardPage: React.FC = () => {
       }
 
       try {
-        // Cargar perfil del usuario
+        // Fetch user profile
         const profile = await getUserProfile(user.uid);
 
+        // Redirect if onboarding is not completed
         if (!profile || !profile.onboarding_completed) {
           navigate("/onboarding");
           return;
@@ -56,7 +57,7 @@ const DashboardPage: React.FC = () => {
 
         setUserProfile(profile);
 
-        // Cargar pensum
+        // Fetch pensum data
         setLoadingPensum(true);
         const pensumData = await getPensum(
           profile.career_id,
@@ -74,6 +75,8 @@ const DashboardPage: React.FC = () => {
 
     loadUserData();
   }, [user, navigate]);
+  
+  // Get current semester based on current month
   const getCurrentSemester = () => {
     const now = new Date();
     const month = now.getMonth() + 1;
@@ -121,12 +124,12 @@ const DashboardPage: React.FC = () => {
     try {
       if (!user?.uid) return;
 
-      // Actualizar en Firebase
+      // Update in Firebase
       await updateUserProfile(user.uid, {
         completed_courses: newCompletedCourses,
       });
 
-      // Actualizar estado local
+      // Update local state
       setUserProfile((prev) =>
         prev
           ? {
@@ -137,7 +140,7 @@ const DashboardPage: React.FC = () => {
       );
     } catch (error) {
       console.error("Error actualizando cursos:", error);
-      // Aquí podrías mostrar un toast o notificación de error
+      // Show error notification
     }
   };
 
