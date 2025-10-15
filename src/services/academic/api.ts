@@ -66,7 +66,7 @@ export const getCareers = async (): Promise<Career[]> => {
     return careers;
   } catch (error) {
     console.error("Error fetching careers:", error);
-    // Fallback data en caso de error
+    // Fallback
     return [
       { id: "09", name: "INGENIERÍA EN CIENCIAS Y SISTEMAS", code: "09" },
       { id: "01", name: "INGENIERÍA CIVIL", code: "01" },
@@ -81,7 +81,6 @@ export const getPensum = async (
   careerId: string,
   versionYear?: number
 ): Promise<Course[]> => {
-  // Usar la función RPC de PostgREST
   const currentYear = versionYear || new Date().getFullYear();
   const url = `/rpc/pensum?p_code=${careerId}&p_year=${currentYear}`;
 
@@ -89,7 +88,6 @@ export const getPensum = async (
     method: 'GET'
   });
 
-  // PostgREST devuelve directamente un array
   const courses = response;
 
   const transformedCourses: Course[] = courses.map((course: any, index: number) => ({
