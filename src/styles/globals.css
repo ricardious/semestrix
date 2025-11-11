@@ -97,21 +97,25 @@ layer(base);
   }
 }
 
-body {
-  background-color: var(--color-base-100);
-  color: var(--color-neutral);
-  transition: background-color 300ms, color 300ms;
-  font-family: "Space Grotesk", sans-serif;
-}
-
-.dark body {
-  background-color: var(--color-base-dark);
-  color: var(--color-base-dark-content);
-}
-
 @layer base {
   * {
     scroll-behavior: smooth;
+  }
+
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    background-color: var(--color-base-100);
+    color: var(--color-neutral);
+    transition: background-color 300ms, color 300ms;
+    font-family: "Space Grotesk", sans-serif;
+  }
+
+  .dark body {
+    background-color: var(--color-base-dark);
+    color: var(--color-base-dark-content);
   }
 
   /* Webkit Browsers (Chrome, Safari, Edge) */
@@ -134,43 +138,6 @@ body {
   .dark ::-webkit-scrollbar-thumb {
     background: linear-gradient(to bottom, rgb(0, 153, 184), rgb(153, 0, 184));
   }
-}
-
-/* Custom scrollbar styles */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(107, 114, 128, 0.3);
-  border-radius: 3px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(107, 114, 128, 0.5);
-}
-
-/* Dark mode scrollbar */
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.3);
-}
-
-.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(156, 163, 175, 0.5);
-}
-
-/* Firefox scrollbar */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(107, 114, 128, 0.3) transparent;
-}
-
-.dark .custom-scrollbar {
-  scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
 }
 
 @layer components {
@@ -261,5 +228,95 @@ body {
       ),
       rgba(113, 47, 255, 0.24);
     box-shadow: inset 0 0 12px #bf97ff70;
+  }
+
+  /* Custom scrollbar styles */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(107, 114, 128, 0.3);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(107, 114, 128, 0.5);
+  }
+
+  /* Dark mode scrollbar */
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.3);
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 163, 175, 0.5);
+  }
+
+  /* Firefox scrollbar */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(107, 114, 128, 0.3) transparent;
+  }
+
+  .dark .custom-scrollbar {
+    scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+  }
+
+  .liquid-glass {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 0;
+    position: relative;
+    isolation: isolate;
+    border-radius: inherit;
+    padding: 0;
+    margin: 0;
+    box-shadow: var(--liquid-outer-shadow, 0px 6px 24px rgba(0, 0, 0, 0.2));
+    border: none;
+    background: none;
+    text-decoration: none;
+  }
+
+  .liquid-glass::before,
+  .liquid-glass::after {
+    inset: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+  }
+
+  .liquid-glass::before {
+    content: "";
+    z-index: 0;
+    box-shadow: var(--liquid-inner-shadow, inset 0 0 15px -5px #000000);
+    background-color: var(--liquid-bg-tint, rgba(255, 255, 255, 0));
+  }
+
+  .liquid-glass::after {
+    content: "";
+    z-index: -1;
+    backdrop-filter: var(--liquid-blur, blur(2px));
+    -webkit-backdrop-filter: var(--liquid-blur, blur(2px));
+    filter: url(/liquid-glass.svg#liquid-glass);
+    -webkit-filter: url(/liquid-glass.svg#liquid-glass);
+  }
+
+  .dark .liquid-glass {
+    --liquid-outer-shadow: 0px 6px 24px
+      oklch(from var(--color-base-100) l c h / 0.15);
+    --liquid-inner-shadow: inset 0 0 15px -5px oklch(from var(--color-base-100)
+          l c h / 0.3);
+    --liquid-bg-tint: oklch(from var(--color-neutral) l c h / 0.05);
   }
 }
