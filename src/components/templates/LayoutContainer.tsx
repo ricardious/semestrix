@@ -6,7 +6,7 @@ import Footer from "@components/organisms/Footer";
 const LayoutContainer: React.FC = () => {
   return (
     <>
-       <StarsCanvas />
+      <StarsCanvas />
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="relative z-0 flex-grow">
