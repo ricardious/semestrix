@@ -1,13 +1,9 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import {
-  fadeIn,
-  slideInFromBottom,
-  staggerContainer,
-} from "@lib/helpers/motion";
+import { slideInFromBottom } from "@lib/helpers/motion";
 import { HELP_CATEGORIES, FAQS } from "@lib/constants/help";
 import SvgIcon from "@atoms/SvgIcon";
-import SectionTitle from "@atoms/SectionTitle";
+import AnimatedText from "@atoms/AnimatedText";
 import HelpCategory from "@molecules/HelpCategory";
 import FAQItem from "@molecules/FAQItem";
 
@@ -26,26 +22,22 @@ const Help = () => {
       id="help"
       className="py-16 md:py-24 px-4 md:px-8 lg:px-20 bg-gradient-to-b from-transparent to-gray-50/50 dark:to-gray-900/30"
     >
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={staggerContainer}
-        className="max-w-7xl mx-auto"
-      >
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <motion.div variants={fadeIn(0.2)} className="mb-6">
-            <SectionTitle>Centro de ayuda y soporte</SectionTitle>
-          </motion.div>
+          <AnimatedText
+            tag="h2"
+            text="Centro de ayuda y soporte"
+            delay={0.1}
+            variant="title"
+          />
 
-          <motion.p
-            variants={slideInFromBottom}
-            className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
-          >
-            Encuentra toda la información que necesitas para aprovechar al
-            máximo esta plataforma de planificación académica.
-          </motion.p>
+          <AnimatedText
+            tag="p"
+            text="Encuentra toda la información que necesitas para aprovechar al máximo esta plataforma de planificación académica."
+            delay={0.2}
+            variant="description"
+          />
         </div>
 
         {/* Help Categories */}
@@ -64,12 +56,18 @@ const Help = () => {
         {/* FAQ Section */}
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Preguntas Frecuentes
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
-              Encuentra respuestas rápidas a las dudas más comunes
-            </p>
+            <AnimatedText
+              tag="h2"
+              text="Preguntas Frecuentes"
+              delay={0.3}
+              variant="title"
+            />
+            <AnimatedText
+              tag="p"
+              text="Encuentra respuestas rápidas a las dudas más comunes"
+              delay={0.4}
+              variant="description"
+            />
           </div>
 
           {/* Search Bar */}
@@ -137,7 +135,7 @@ const Help = () => {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };
