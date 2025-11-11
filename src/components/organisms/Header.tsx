@@ -38,7 +38,7 @@ const Header: React.FC = () => {
       </Link>
 
       {/* Desktop Navigation */}
-      <ul className="liquid-glass hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8 rounded-full px-6 lg:px-8 xl:px-12 py-2 lg:py-3z-[1]">
+      <ul className="liquid-glass hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8 rounded-full px-6 lg:px-8 xl:px-12 py-2 lg:py-3 z-[1]">
         {menuItems.map((item) => (
           <li key={item.label} className="relative group">
             <a
