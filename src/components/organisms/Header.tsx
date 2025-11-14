@@ -65,7 +65,7 @@ const Header: React.FC = () => {
         </Link>
         <label
           htmlFor="auth-modal"
-          className="hidden lg:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 transition-all duration-300 hover:border-gray-400 hover:shadow-lg hover:scale-105 active:scale-95 group cursor-pointer"
+          className="hidden md:flex items-center gap-2 lg:gap-3 px-6 lg:px-10 py-2 lg:py-2.5 text-sm lg:text-base border border-gray-500 rounded-full ml-2 md:ml-3 lg:ml-4 transition-all duration-300 hover:border-gray-400 hover:shadow-lg hover:scale-105 active:scale-95 group cursor-pointer"
         >
           Ingresar
           <SvgIcon
