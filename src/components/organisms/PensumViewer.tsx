@@ -33,14 +33,34 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
     ...Object.keys(coursesBySemester).map(Number)
   );
 
+  const canSelectCourse = (course: Course): boolean => {
+    if (!course.prerequisites || course.prerequisites.length === 0) {
+      return true;
+    }
+
+    return course.prerequisites.every((prereq) =>
+      tempCompletedCourses.includes(prereq)
+    );
+  };
+
   const handleCourseToggle = (courseCode: string) => {
     if (!isEditMode) return;
 
-    setTempCompletedCourses((prev) =>
-      prev.includes(courseCode)
-        ? prev.filter((code) => code !== courseCode)
-        : [...prev, courseCode]
-    );
+    const course = pensum.find((c) => c.code === courseCode);
+    if (!course) return;
+
+    if (tempCompletedCourses.includes(courseCode)) {
+      setTempCompletedCourses((prev) =>
+        prev.filter((code) => code !== courseCode)
+      );
+      return;
+    }
+
+    if (!canSelectCourse(course)) {
+      return;
+    }
+
+    setTempCompletedCourses((prev) => [...prev, courseCode]);
   };
 
   const handleSaveChanges = () => {
@@ -104,6 +124,8 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
         <div className="space-y-2">
           {coursesBySemester[semester]?.map((course) => {
             const isCompleted = activeCourses.includes(course.code);
+            const canSelect = canSelectCourse(course);
+            const isDisabled = isEditMode && !isCompleted && !canSelect;
 
             return (
               <div key={course.id} className="relative group/course">
@@ -111,7 +133,7 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
                   className={`absolute inset-0 rounded-lg transition-all duration-300 blur-md ${
                     isCompleted
                       ? "bg-gradient-to-br from-green-500/15 to-green-600/15 opacity-100"
-                      : isEditMode
+                      : isEditMode && canSelect
                       ? "bg-gradient-to-br from-primary/8 to-secondary/8 opacity-0 group-hover/course:opacity-100"
                       : "opacity-0"
                   }`}
@@ -120,15 +142,19 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
                 <div
                   onClick={() => handleCourseToggle(course.code)}
                   className={`relative p-2 rounded-lg border transition-all duration-300 backdrop-blur-md ${
-                    isEditMode
+                    isEditMode && !isDisabled
                       ? "cursor-pointer hover:shadow-sm hover:scale-[1.01]"
+                      : isDisabled
+                      ? "cursor-not-allowed opacity-60"
                       : ""
                   } ${
                     isCompleted
                       ? "border-green-200/40 bg-green-50/60 dark:border-green-800/40 dark:bg-green-900/15"
+                      : isDisabled
+                      ? "border-red-200/40 dark:border-red-800/40 bg-red-50/30 dark:bg-red-900/10"
                       : "border-gray-200/40 dark:border-gray-600/40 bg-gray-50/60 dark:bg-gray-700/40"
                   } ${
-                    isEditMode && !isCompleted
+                    isEditMode && !isCompleted && canSelect
                       ? "hover:border-green-300/40 hover:bg-green-50/40 dark:hover:border-green-700/40 dark:hover:bg-green-900/8"
                       : ""
                   }`}
@@ -157,11 +183,22 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
                       </div>
                       {course.prerequisites &&
                         course.prerequisites.length > 0 && (
-                          <div className="mt-1 text-xs text-gray-600 dark:text-gray-400">
+                          <div
+                            className={`mt-1 text-xs ${
+                              isDisabled
+                                ? "text-red-600 dark:text-red-400 font-medium"
+                                : "text-gray-600 dark:text-gray-400"
+                            }`}
+                          >
                             <span className="font-medium">Prerrequisitos:</span>{" "}
                             <span className="break-words">
                               {course.prerequisites.join(", ")}
                             </span>
+                            {isDisabled && (
+                              <span className="block mt-0.5 text-red-500 dark:text-red-400">
+                                ⚠️ Completa los prerrequisitos primero
+                              </span>
+                            )}
                           </div>
                         )}
                     </div>
@@ -170,7 +207,7 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
                         className={`absolute inset-0 rounded-full transition-all duration-300 blur-sm ${
                           isCompleted
                             ? "bg-green-500/15 opacity-100"
-                            : isEditMode
+                            : isEditMode && canSelect
                             ? "bg-primary/15 opacity-0 group-hover/checkbox:opacity-100"
                             : "opacity-0"
                         }`}
@@ -180,6 +217,8 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
                         className={`relative w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
                           isCompleted
                             ? "border-green-500 bg-green-500 text-white shadow-md"
+                            : isDisabled
+                            ? "border-red-300 dark:border-red-700 bg-red-50/50 dark:bg-red-900/20"
                             : isEditMode
                             ? "border-gray-400 dark:border-gray-500 hover:border-green-400 hover:bg-green-50/50 dark:hover:border-green-600 hover:scale-110"
                             : "border-gray-300 dark:border-gray-600"
@@ -503,6 +542,8 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   {coursesBySemester[selectedSemester]?.map((course) => {
                     const isCompleted = activeCourses.includes(course.code);
+                    const canSelect = canSelectCourse(course);
+                    const isDisabled = isEditMode && !isCompleted && !canSelect;
 
                     return (
                       <div key={course.id} className="relative group/course">
@@ -510,7 +551,7 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
                           className={`absolute inset-0 rounded-lg transition-all duration-300 blur-lg ${
                             isCompleted
                               ? "bg-gradient-to-br from-green-500/15 to-green-600/15 opacity-100"
-                              : isEditMode
+                              : isEditMode && canSelect
                               ? "bg-gradient-to-br from-primary/8 to-secondary/8 opacity-0 group-hover/course:opacity-100"
                               : "opacity-0"
                           }`}
@@ -519,15 +560,19 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
                         <div
                           onClick={() => handleCourseToggle(course.code)}
                           className={`relative p-4 rounded-lg border-2 transition-all duration-300 backdrop-blur-sm ${
-                            isEditMode
+                            isEditMode && !isDisabled
                               ? "cursor-pointer hover:shadow-md hover:scale-102"
+                              : isDisabled
+                              ? "cursor-not-allowed opacity-60"
                               : ""
                           } ${
                             isCompleted
                               ? "border-green-200/40 bg-green-50/60 dark:border-green-800/40 dark:bg-green-900/15"
+                              : isDisabled
+                              ? "border-red-200/40 dark:border-red-800/40 bg-red-50/30 dark:bg-red-900/10"
                               : "border-gray-200/40 dark:border-gray-600/40 bg-gray-50/60 dark:bg-gray-700/40"
                           } ${
-                            isEditMode && !isCompleted
+                            isEditMode && !isCompleted && canSelect
                               ? "hover:border-green-300/40 hover:bg-green-50/40 dark:hover:border-green-700/40 dark:hover:bg-green-900/8"
                               : ""
                           }`}
@@ -560,11 +605,22 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
                               </div>
                               {course.prerequisites &&
                                 course.prerequisites.length > 0 && (
-                                  <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                                  <div
+                                    className={`mt-2 text-xs ${
+                                      isDisabled
+                                        ? "text-red-600 dark:text-red-400 font-medium"
+                                        : "text-gray-600 dark:text-gray-400"
+                                    }`}
+                                  >
                                     <span className="font-medium">
                                       Prerrequisitos:
                                     </span>{" "}
                                     {course.prerequisites.join(", ")}
+                                    {isDisabled && (
+                                      <span className="block mt-1 text-red-500 dark:text-red-400">
+                                        ⚠️ Completa los prerrequisitos primero
+                                      </span>
+                                    )}
                                   </div>
                                 )}
                             </div>
@@ -573,7 +629,7 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
                                 className={`absolute inset-0 rounded-full transition-all duration-300 blur-sm ${
                                   isCompleted
                                     ? "bg-green-500/15 opacity-100"
-                                    : isEditMode
+                                    : isEditMode && canSelect
                                     ? "bg-primary/15 opacity-0 group-hover/checkbox:opacity-100"
                                     : "opacity-0"
                                 }`}
@@ -583,6 +639,8 @@ const PensumViewer: React.FC<PensumViewerProps> = ({
                                 className={`relative w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
                                   isCompleted
                                     ? "border-green-500 bg-green-500 text-white shadow-lg"
+                                    : isDisabled
+                                    ? "border-red-300 dark:border-red-700 bg-red-50/50 dark:bg-red-900/20"
                                     : isEditMode
                                     ? "border-gray-400 dark:border-gray-500 hover:border-green-400 hover:bg-green-50 dark:hover:border-green-600 hover:scale-110"
                                     : "border-gray-300 dark:border-gray-600"
