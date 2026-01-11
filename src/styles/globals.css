@@ -323,4 +323,14 @@ layer(base);
           l c h / 0.3);
     --liquid-bg-tint: oklch(from var(--color-neutral) l c h / 0.05);
   }
+
+  /* Hide number input spinners */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
 }
