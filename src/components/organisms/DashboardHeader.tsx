@@ -1,43 +1,30 @@
-import { signOut } from "firebase/auth";
-import { auth } from "@lib/firebase/config";
 import { useNavigate } from "react-router-dom";
+import { useNeonAuth } from "@lib/hooks/useNeonAuth";
+import { useMyHistory } from "@services/history/queries";
 import SvgIcon from "@atoms/SvgIcon";
 import { Img } from "react-image";
-
-interface FirebaseUser {
-  uid: string;
-  displayName?: string | null;
-  photoURL?: string | null;
-  email?: string | null;
-}
-
-interface UserProfile {
-  uid: string;
-  career_id: string;
-  career_name: string;
-  start_year: number;
-  completed_courses: string[];
-  onboarding_completed: boolean;
-  created_at: Date;
-  updated_at: Date;
-}
+import type { User } from "@lib/types/api";
+import type { AcademicProfile } from "@lib/types/api";
 
 interface DashboardHeaderProps {
-  user: FirebaseUser | null;
-  userProfile: UserProfile;
+  user: User | null;
+  userProfile: AcademicProfile;
   currentSemester: number;
+  programName?: string;
 }
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   user,
-  userProfile,
   currentSemester,
+  programName = "Tu Carrera",
 }) => {
   const navigate = useNavigate();
+  const { signOut } = useNeonAuth();
+  const { data: history = [] } = useMyHistory();
 
   const handleSignOut = async () => {
     try {
-      await signOut(auth);
+      await signOut();
       navigate("/");
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
@@ -45,27 +32,25 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   };
 
   const calculateCurrentAcademicYear = () => {
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth() + 1;
-
-    const academicStartYear = currentMonth <= 6 ? currentYear - 1 : currentYear;
-    const yearsSinceStart = academicStartYear - userProfile.start_year;
-
-    return Math.max(1, yearsSinceStart + 1);
+    // Simple calculation based on history length
+    return Math.max(1, Math.floor(history.length / 8) + 1);
   };
 
   const getProgressStats = () => {
-    const completedCredits = userProfile.completed_courses.length * 4;
-    const totalCredits = 300;
+    const approvedCourses = history.filter(
+      (h) => h.status === "approved"
+    ).length;
+    const totalCreditsCompleted = approvedCourses * 4; // Assuming 4 credits per course
+
+    const totalCredits = 300; // Default, can be fetched from program
     const progressPercentage = Math.min(
-      (completedCredits / totalCredits) * 100,
+      (totalCreditsCompleted / totalCredits) * 100,
       100
     );
 
     return {
-      completedCourses: userProfile.completed_courses.length,
-      completedCredits,
+      completedCourses: approvedCourses,
+      completedCredits: totalCreditsCompleted,
       totalCredits,
       progressPercentage: Math.round(progressPercentage),
     };
@@ -134,18 +119,18 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               <div className="flex items-center space-x-3">
                 <div className="text-right hidden sm:block">
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
-                    {user?.displayName?.split(" ")[0] || "Usuario"}
+                    {user?.name || user?.email?.split("@")[0] || "Usuario"}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {userProfile.career_name}
+                    {programName}
                   </p>
                 </div>
 
                 <div className="relative group">
                   <div className="w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-primary to-secondary p-0.5">
-                    {user?.photoURL ? (
+                    {user?.image ? (
                       <img
-                        src={user.photoURL}
+                        src={user.image}
                         alt="Foto de perfil"
                         className="w-full h-full object-cover rounded-lg"
                       />
