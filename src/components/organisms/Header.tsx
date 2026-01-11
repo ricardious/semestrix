@@ -98,6 +98,7 @@ const Header: React.FC = () => {
           <label
             htmlFor="auth-modal"
             className="flex items-center gap-3 text-white font-semibold cursor-pointer"
+            onClick={closeMenu}
           >
             Ingresar
             <SvgIcon name="arrow-up-right" size="sm" className="text-white" />
