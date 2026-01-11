@@ -5,8 +5,11 @@ import routesConstants from "@lib/constants/routeConstants";
 // Layouts
 import LayoutContainer from "@components/templates/LayoutContainer";
 import LegalLayout from "@components/templates/LegalLayout";
-import ProtectedRoute from "@components/templates/ProtectedRoute";
-import OnboardingLayout from "@components/templates/OnboardingLayout";
+
+// Route Guards (Templates)
+import { AuthGuard } from "@components/templates/AuthGuard";
+import { DashboardGate } from "@components/templates/DashboardGate";
+import { OnboardingRouter } from "@components/templates/OnboardingRouter";
 
 // Components
 import PingLoader from "@components/atoms/PingLoader";
@@ -15,8 +18,18 @@ import PingLoader from "@components/atoms/PingLoader";
 const Home = lazy(() => import("@pages/HomePage"));
 const PrivacyPage = lazy(() => import("@pages/PrivacyPage"));
 const TermsPage = lazy(() => import("@pages/TermsPage"));
-const OnboardingPage = lazy(() => import("@pages/OnboardingPage"));
+const OnboardingIdentityPage = lazy(
+  () => import("@pages/OnboardingIdentityPage")
+);
+const OnboardingHistoryPage = lazy(
+  () => import("@pages/OnboardingHistoryPage")
+);
+const OnboardingCompletePage = lazy(
+  () => import("@pages/OnboardingCompletePage")
+);
 const DashboardPage = lazy(() => import("@pages/DashboardPage"));
+const SchedulePage = lazy(() => import("@pages/SchedulePage"));
+const GeneratorPage = lazy(() => import("@pages/GeneratorPage"));
 const ErrorPage = lazy(() => import("@pages/ErrorPage"));
 
 const routes: RouteObject[] = [
@@ -58,29 +71,66 @@ const routes: RouteObject[] = [
     ],
   },
   {
-    element: <ProtectedRoute />,
+    element: <AuthGuard />,
     children: [
       {
         path: routesConstants.ONBOARDING,
-        element: <OnboardingLayout />,
+        element: <OnboardingRouter />,
         children: [
           {
             index: true,
             element: (
               <Suspense fallback={<PingLoader />}>
-                <OnboardingPage />
+                <OnboardingIdentityPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "history",
+            element: (
+              <Suspense fallback={<PingLoader />}>
+                <OnboardingHistoryPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "complete",
+            element: (
+              <Suspense fallback={<PingLoader />}>
+                <OnboardingCompletePage />
               </Suspense>
             ),
           },
         ],
       },
       {
-        path: routesConstants.DASHBOARD,
-        element: (
-          <Suspense fallback={<PingLoader />}>
-            <DashboardPage />
-          </Suspense>
-        ),
+        element: <DashboardGate />,
+        children: [
+          {
+            path: routesConstants.DASHBOARD,
+            element: (
+              <Suspense fallback={<PingLoader />}>
+                <DashboardPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "/horarios",
+            element: (
+              <Suspense fallback={<PingLoader />}>
+                <SchedulePage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "/generador",
+            element: (
+              <Suspense fallback={<PingLoader />}>
+                <GeneratorPage />
+              </Suspense>
+            ),
+          },
+        ],
       },
     ],
   },
