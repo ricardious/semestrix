@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthState } from "@lib/hooks/useAuthState";
+import { useNeonAuth } from "@lib/hooks/useNeonAuth";
 
 interface ProtectedRouteProps {
   redirectTo?: string;
@@ -8,9 +8,9 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   redirectTo = "/",
 }) => {
-  const { user, loading } = useAuthState();
+  const { user, isLoading } = useNeonAuth();
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="rounded-full h-20 w-20 bg-primary animate-ping"></div>
