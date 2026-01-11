@@ -8,17 +8,20 @@ interface AuthProviderButtonProps {
   provider: "google" | "github";
   onClick: () => void;
   label: string;
+  disabled?: boolean;
 }
 
 export default function AuthProviderButton({
   provider,
   onClick,
   label,
+  disabled = false,
 }: AuthProviderButtonProps) {
   return (
     <button
       onClick={onClick}
-      className="group w-full h-12 px-6 border-2 border-gray-200 dark:border-gray-600 rounded-full transition-all duration-300 hover:border-primary dark:hover:border-accent hover:shadow-lg hover:scale-105 active:scale-95 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm"
+      disabled={disabled}
+      className="group w-full h-12 px-6 border-2 border-gray-200 dark:border-gray-600 rounded-full transition-all duration-300 hover:border-primary dark:hover:border-accent hover:shadow-lg hover:scale-105 active:scale-95 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:border-gray-200 disabled:dark:hover:border-gray-600"
     >
       <div className="flex items-center justify-center space-x-3">
         {provider === "google" ? (
