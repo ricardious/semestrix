@@ -1,205 +1,219 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useMyProfile } from "@services/profiles/queries";
 import { useCurrentUser } from "@services/auth/queries";
-import { useNavigate } from "react-router-dom";
-import LoadingSpinner from "@atoms/LoadingSpinner";
+import { usePrograms } from "@services/programs/queries";
 import {
-  getUserProfile,
-  updateUserProfile,
-} from "@/services/firebase/profiles";
-import { getPensum, Course } from "@/services/academic/api";
-import DashboardHeader from "@organisms/DashboardHeader";
-import PensumViewer from "@organisms/PensumViewer";
-import ScheduleGenerator from "@organisms/ScheduleGenerator";
+  useCourseProgress,
+  CourseProgressNode,
+} from "@lib/hooks/useCourseProgress";
+import {
+  useUpdateManualHistoryEntry,
+  useCreateManualHistoryEntry,
+} from "@services/history/mutations";
+import { useMyHistory } from "@services/history/queries";
+import { ManualUpdateRequest, ManualCreateRequest } from "@lib/types/api";
+import DashboardLayout from "@components/templates/DashboardLayout";
+import DashboardCurriculumBoard from "@organisms/DashboardCurriculumBoard";
+import UserProfileCard from "@molecules/UserProfileCard";
+import StatsCard from "@molecules/StatsCard";
+import CourseTable from "@molecules/CourseTable";
+import CourseEditModal from "@molecules/CourseEditModal";
+import SvgIcon from "@atoms/SvgIcon";
 
-interface FirebaseUser {
-  uid: string;
-  displayName?: string | null;
-  photoURL?: string | null;
-  email?: string | null;
-}
+export default function DashboardPage() {
+  const { data: profile } = useMyProfile();
+  const { data: user } = useCurrentUser();
+  const { data: programs } = usePrograms();
+  const { semesters, overallProgress, extracurriculars, error } =
+    useCourseProgress(profile?.current_version_id || null);
 
-interface UserProfile {
-  uid: string;
-  career_id: string;
-  career_name: string;
-  start_year: number;
-  completed_courses: string[];
-  onboarding_completed: boolean;
-  created_at: Date;
-  updated_at: Date;
-}
+  const [activeTab, setActiveTab] = useState<"board" | "list">("board");
 
-const DashboardPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { data: user } = useCurrentUser() as { data: FirebaseUser | null };
-  const [loading, setLoading] = useState(true);
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [pensum, setPensum] = useState<Course[]>([]);
-  const [activeTab, setActiveTab] = useState<"pensum" | "schedule">("pensum");
-  const [loadingPensum, setLoadingPensum] = useState(false);
+  // Course edit modal state
+  const [selectedCourse, setSelectedCourse] =
+    useState<CourseProgressNode | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    const loadUserData = async () => {
-      if (!user?.uid) {
-        navigate("/onboarding");
-        return;
-      }
+  // Mutations
+  const updateMutation = useUpdateManualHistoryEntry();
+  const createMutation = useCreateManualHistoryEntry();
 
-      try {
-        // Fetch user profile
-        const profile = await getUserProfile(user.uid);
+  const handleCourseClick = (course: CourseProgressNode) => {
+    // Don't open modal for locked courses
+    if (course.status === "locked") return;
 
-        // Redirect if onboarding is not completed
-        if (!profile || !profile.onboarding_completed) {
-          navigate("/onboarding");
-          return;
-        }
-
-        setUserProfile(profile);
-
-        // Fetch pensum data
-        setLoadingPensum(true);
-        const pensumData = await getPensum(
-          profile.career_id,
-          profile.start_year
-        );
-        setPensum(pensumData);
-      } catch (error) {
-        console.error("Error cargando datos del usuario:", error);
-        navigate("/onboarding");
-      } finally {
-        setLoading(false);
-        setLoadingPensum(false);
-      }
-    };
-
-    loadUserData();
-  }, [user, navigate]);
-  
-  // Get current semester based on current month
-  const getCurrentSemester = () => {
-    const now = new Date();
-    const month = now.getMonth() + 1;
-    return month >= 1 && month <= 6 ? 1 : 2;
+    setSelectedCourse(course);
+    setIsModalOpen(true);
   };
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
-        <LoadingSpinner size="lg" />
-        <div className="text-center">
-          <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
-            Cargando tu información académica
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md">
-            Estamos preparando tu pensum y horarios disponibles...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!userProfile) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
-        <div className="text-center">
-          <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
-            No se encontró tu perfil
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mb-4">
-            Parece que no has completado el proceso de configuración inicial.
-          </p>
-          <button
-            onClick={() => navigate("/onboarding")}
-            className="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity"
-          >
-            Completar configuración
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const handleCoursesUpdate = async (newCompletedCourses: string[]) => {
-    try {
-      if (!user?.uid) return;
-
-      // Update in Firebase
-      await updateUserProfile(user.uid, {
-        completed_courses: newCompletedCourses,
-      });
-
-      // Update local state
-      setUserProfile((prev) =>
-        prev
-          ? {
-              ...prev,
-              completed_courses: newCompletedCourses,
-            }
-          : null
+  const handleSaveCourse = (
+    historyId: number | null,
+    data: ManualUpdateRequest
+  ) => {
+    if (historyId) {
+      // Update existing history entry
+      updateMutation.mutate(
+        { historyId, data },
+        {
+          onSuccess: () => setIsModalOpen(false),
+        }
       );
-    } catch (error) {
-      console.error("Error actualizando cursos:", error);
-      // Show error notification
+    } else {
+      // Create new history entry
+      const createData: ManualCreateRequest = {
+        course_id: data.course_id,
+        year: data.year!,
+        term: data.term!,
+        grade: data.grade,
+        status: data.status!,
+      };
+      createMutation.mutate(createData, {
+        onSuccess: () => setIsModalOpen(false),
+      });
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <DashboardHeader
-        user={user}
-        userProfile={userProfile}
-        currentSemester={getCurrentSemester()}
-      />
+  const programName = programs?.find(
+    (p) => p.program_id === profile?.current_program_id
+  )?.program_name;
 
-      {/* Navigation Tabs */}
-      <div className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex space-x-8">
-            <button
-              onClick={() => setActiveTab("pensum")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === "pensum"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300"
-              }`}
-            >
-              Mi Pensum
-            </button>
-            <button
-              onClick={() => setActiveTab("schedule")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === "schedule"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300"
-              }`}
-            >
-              Generar Horario
-            </button>
-          </nav>
+  if (error) {
+    return (
+      <DashboardLayout>
+        <div className="flex h-[60vh] flex-col items-center justify-center p-4 text-center">
+          <h2 className="text-2xl font-bold text-error">
+            Error al cargar datos
+          </h2>
+          <p className="text-base-content/60 dark:text-white/60">
+            No se pudo cargar tu perfil o el pensum.
+          </p>
         </div>
-      </div>
+      </DashboardLayout>
+    );
+  }
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === "pensum" && (
-          <PensumViewer
-            pensum={pensum}
-            completedCourses={userProfile.completed_courses}
-            loading={loadingPensum}
-            onCoursesUpdate={handleCoursesUpdate}
-          />
-        )}
-        {activeTab === "schedule" && (
-          <ScheduleGenerator
-            pensum={pensum}
-            completedCourses={userProfile.completed_courses}
-            currentSemester={getCurrentSemester()}
-          />
-        )}
-      </div>
+  // View toggle actions for the header
+  const viewToggleActions = (
+    <div className="flex rounded-lg border border-base-content/10 bg-base-100/80 p-1 dark:border-white/10 dark:bg-base-dark/50">
+      <button
+        onClick={() => setActiveTab("board")}
+        className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+          activeTab === "board"
+            ? "bg-primary text-white shadow-sm"
+            : "text-base-content/60 hover:bg-base-200/50 hover:text-base-content dark:text-white/60 dark:hover:bg-white/10 dark:hover:text-white"
+        }`}
+      >
+        <SvgIcon name="squares-2x2" className="h-4 w-4" />
+        <span className="hidden sm:inline">Mapa</span>
+      </button>
+      <button
+        onClick={() => setActiveTab("list")}
+        className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+          activeTab === "list"
+            ? "bg-primary text-white shadow-sm"
+            : "text-base-content/60 hover:bg-base-200/50 hover:text-base-content dark:text-white/60 dark:hover:bg-white/10 dark:hover:text-white"
+        }`}
+      >
+        <SvgIcon name="list-bullet" className="h-4 w-4" />
+        <span className="hidden sm:inline">Lista</span>
+      </button>
     </div>
   );
-};
 
-export default DashboardPage;
+  return (
+    <DashboardLayout
+      title="Mi Progreso Académico"
+      subtitle={programName || "Cargando programa..."}
+      actions={viewToggleActions}
+    >
+      {/* User Profile Card */}
+      <div className="mb-8">
+        <UserProfileCard
+          user={user}
+          profile={profile}
+          programName={programName}
+        />
+      </div>
+
+      {/* Stats Row */}
+      <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <StatsCard
+          label="Créditos"
+          value={`${overallProgress.approvedCredits} / ${overallProgress.totalCredits}`}
+          icon="dictionary-language-book"
+          variant="primary"
+        />
+        <StatsCard
+          label="Avance"
+          value={`${
+            overallProgress.totalCredits > 0
+              ? Math.round(
+                  (overallProgress.approvedCredits /
+                    overallProgress.totalCredits) *
+                    100
+                )
+              : 0
+          }%`}
+          icon="graph-bar-increase"
+          variant="secondary"
+        />
+        <StatsCard
+          label="Materias"
+          value={`${overallProgress.completedCount} / ${overallProgress.totalCount}`}
+          icon="circle-check"
+          variant="success"
+        />
+        <StatsCard
+          label="Semestre"
+          value={profile?.current_semester?.toString() || "-"}
+          icon="calendar-check"
+          variant="info"
+        />
+      </div>
+
+      {/* Main Content */}
+      <div className="min-h-[500px]">
+        {activeTab === "board" ? (
+          <div className="space-y-8">
+            <DashboardCurriculumBoard
+              semesters={semesters}
+              onCourseClick={handleCourseClick}
+            />
+
+            {/* Extracurriculars Section */}
+            {extracurriculars.length > 0 && (
+              <div className="mt-12 rounded-2xl border border-base-content/10 bg-base-100/30 p-6 backdrop-blur dark:border-white/10 dark:bg-base-dark/20">
+                <h3 className="mb-4 text-base font-bold text-base-content/80 dark:text-white/80">
+                  Otros Créditos / No en Pensum
+                </h3>
+                <div className="overflow-x-auto">
+                  <CourseTable items={extracurriculars} />
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-base-content/10 bg-base-100/30 p-1 backdrop-blur dark:border-white/10 dark:bg-base-dark/20 md:p-6">
+            <HistoryListView />
+          </div>
+        )}
+      </div>
+
+      {/* Course Edit Modal */}
+      <CourseEditModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        course={selectedCourse}
+        historyItem={selectedCourse?.historyItem}
+        onSave={handleSaveCourse}
+        isLoading={updateMutation.isPending || createMutation.isPending}
+      />
+    </DashboardLayout>
+  );
+}
+
+function HistoryListView() {
+  const { data: history } = useMyHistory();
+  if (!history) return null;
+  return <CourseTable items={history} limit={100} />;
+}
