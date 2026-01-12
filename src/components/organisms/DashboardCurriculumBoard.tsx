@@ -93,47 +93,74 @@ function MobileSemesterAccordion({
       : 0;
 
   return (
-    <div className="collapse collapse-arrow bg-base-100 border border-base-content/10 shadow-sm rounded-xl">
-      <input
-        type="checkbox"
-        checked={isOpen}
-        onChange={() => setIsOpen(!isOpen)}
-      />
-      <div className="collapse-title flex flex-col gap-1 py-3 px-4">
-        <div className="flex justify-between items-center w-full pr-2">
-          <span className="font-bold text-base">
+    <div className="rounded-xl border border-base-content/10 dark:border-white/10 bg-base-100 dark:bg-base-dark/30 shadow-sm overflow-hidden">
+      {/* Header - Clickable */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex flex-col gap-1 py-3 px-4 text-left transition-colors hover:bg-base-200/50 dark:hover:bg-white/5"
+      >
+        <div className="flex justify-between items-center w-full">
+          <span className="font-bold text-base text-base-content dark:text-base-dark-content">
             Semestre {semester.semester}
           </span>
-          <span className="text-xs font-mono opacity-60">
-            {semester.approved_credits}/{semester.total_credits} CR
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono text-base-content/60 dark:text-base-dark-content/60">
+              {semester.approved_credits}/{semester.total_credits} CR
+            </span>
+            {/* Arrow icon */}
+            <svg
+              className={clsx(
+                "w-5 h-5 text-base-content/60 dark:text-base-dark-content/60 transition-transform duration-200",
+                isOpen && "rotate-90"
+              )}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </div>
         </div>
 
         {/* Progress Bar inside header */}
-        <progress
-          className={clsx(
-            "progress w-full h-1.5",
-            progress === 100 ? "progress-success" : "progress-primary"
-          )}
-          value={semester.approved_credits}
-          max={semester.total_credits}
-        ></progress>
-      </div>
+        <div className="w-full bg-base-200 dark:bg-white/10 rounded-full h-1.5 overflow-hidden">
+          <div
+            className={clsx(
+              "h-full rounded-full transition-all duration-300",
+              progress === 100 ? "bg-success" : "bg-primary"
+            )}
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </button>
 
-      <div className="collapse-content px-3 pb-3">
-        <div className="grid grid-cols-2 gap-3 pt-2">
-          {semester.courses.map((course) => (
-            <div key={course.course_id} className="col-span-1">
-              <CourseCard
-                course={course}
-                status={course.status as CourseStatus}
-                historyItem={course.historyItem}
-                missingRequirements={course.missingRequirements}
-                onClick={() => onCourseClick?.(course)}
-                compact={true}
-              />
-            </div>
-          ))}
+      {/* Content - Collapsible */}
+      <div
+        className={clsx(
+          "transition-all duration-300 ease-in-out overflow-hidden",
+          isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+        )}
+      >
+        <div className="px-3 pb-3 pt-2">
+          <div className="grid grid-cols-2 gap-3">
+            {semester.courses.map((course) => (
+              <div key={course.course_id} className="col-span-1">
+                <CourseCard
+                  course={course}
+                  status={course.status as CourseStatus}
+                  historyItem={course.historyItem}
+                  missingRequirements={course.missingRequirements}
+                  onClick={() => onCourseClick?.(course)}
+                  compact={true}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
