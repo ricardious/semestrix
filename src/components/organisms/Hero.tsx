@@ -37,8 +37,9 @@ const HeroContent = () => {
           variants={slideInFromBottom}
           className="text-base md:text-lg text-gray-600 dark:text-gray-400 my-5 max-w-[600px] mx-auto"
         >
-          Organiza tu horario académico, controla tus créditos y descubre qué
-          materias puedes cursar según tu progreso actual.
+          La herramienta esencial para estudiantes de ingeniería. Organiza tu
+          horario, controla tus créditos y descubre qué materias puedes cursar
+          según tu progreso en el pensum.
         </motion.p>
 
         <CTAButton label="Comenzar Ahora" />
