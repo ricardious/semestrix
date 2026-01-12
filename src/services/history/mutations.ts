@@ -20,7 +20,6 @@ import type {
   ManualCreateRequest,
   ManualUpdateRequest,
   HistoryBulkRequest,
-  HistoryBulkResult,
 } from "../../lib/types/api";
 
 /**
