@@ -1,4 +1,6 @@
-export function slideInFromLeft(delay: number) {
+import { Variants } from "framer-motion";
+
+export function slideInFromLeft(delay: number): Variants {
   return {
     hidden: { x: -50, opacity: 0 },
     visible: {
@@ -13,7 +15,7 @@ export function slideInFromLeft(delay: number) {
   };
 }
 
-export function slideInFromRight(delay: number) {
+export function slideInFromRight(delay: number): Variants {
   return {
     hidden: { x: 50, opacity: 0 },
     visible: {
@@ -28,7 +30,7 @@ export function slideInFromRight(delay: number) {
   };
 }
 
-export const slideInFromTop = {
+export const slideInFromTop: Variants = {
   hidden: { y: -30, opacity: 0 },
   visible: {
     y: 0,
@@ -40,7 +42,7 @@ export const slideInFromTop = {
   },
 };
 
-export const slideInFromBottom = {
+export const slideInFromBottom: Variants = {
   hidden: { y: 30, opacity: 0 },
   visible: {
     y: 0,
@@ -53,7 +55,7 @@ export const slideInFromBottom = {
   },
 };
 
-export const fadeIn = (delay: number) => ({
+export const fadeIn = (delay: number): Variants => ({
   hidden: { opacity: 0, scale: 0.95 },
   visible: {
     opacity: 1,
@@ -66,7 +68,7 @@ export const fadeIn = (delay: number) => ({
   },
 });
 
-export const staggerContainer = {
+export const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -77,7 +79,7 @@ export const staggerContainer = {
   },
 };
 
-export const floatUp = (delay: number) => ({
+export const floatUp = (delay: number): Variants => ({
   hidden: {
     y: 60,
     opacity: 0,
@@ -100,8 +102,7 @@ export const floatUp = (delay: number) => ({
   },
 });
 
-// Animación con bounce suave
-export const bounceIn = (delay: number) => ({
+export const bounceIn = (delay: number): Variants => ({
   hidden: {
     scale: 0.3,
     opacity: 0,
@@ -114,7 +115,7 @@ export const bounceIn = (delay: number) => ({
     transition: {
       delay: delay,
       duration: 0.6,
-      ease: "backOut",
+      ease: "easeOut",
       type: "spring",
       stiffness: 260,
       damping: 20,
@@ -122,8 +123,10 @@ export const bounceIn = (delay: number) => ({
   },
 });
 
-// Animación con rotación elegante
-export const rotateSlideIn = (delay: number, direction: "left" | "right") => ({
+export const rotateSlideIn = (
+  delay: number,
+  direction: "left" | "right"
+): Variants => ({
   hidden: {
     x: direction === "left" ? -80 : 80,
     opacity: 0,
@@ -146,7 +149,7 @@ export const rotateSlideIn = (delay: number, direction: "left" | "right") => ({
   },
 });
 
-export const staggerList = (delay: number) => ({
+export const staggerList = (delay: number): Variants => ({
   hidden: {},
   visible: {
     transition: {
@@ -156,7 +159,7 @@ export const staggerList = (delay: number) => ({
   },
 });
 
-export const listItem = {
+export const listItem: Variants = {
   hidden: {
     opacity: 0,
     x: -20,
@@ -171,7 +174,7 @@ export const listItem = {
   },
 };
 
-export const scrollReveal = (delay: number = 0) => ({
+export const scrollReveal = (delay: number = 0): Variants => ({
   hidden: { opacity: 0, y: 30, scale: 0.95 },
   visible: {
     opacity: 1,
@@ -188,7 +191,7 @@ export const scrollReveal = (delay: number = 0) => ({
   },
 });
 
-export const iconReveal = (delay: number = 0) => ({
+export const iconReveal = (delay: number = 0): Variants => ({
   hidden: { scale: 0.8, opacity: 0 },
   visible: {
     scale: 1,
@@ -201,7 +204,7 @@ export const iconReveal = (delay: number = 0) => ({
   },
 });
 
-export const textReveal = (delay: number = 0) => ({
+export const textReveal = (delay: number = 0): Variants => ({
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,

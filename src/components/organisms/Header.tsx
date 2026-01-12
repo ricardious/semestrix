@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { Img } from "react-image";
-import GradientBackdrop from "@atoms/GradientBackdrop";
 import SvgIcon from "@atoms/SvgIcon";
 import ThemeToggle from "@molecules/ThemeToggle";
+import AuthModal from "@organisms/AuthModal";
 import routesConstants from "@lib/constants/routeConstants";
 import { useThemeContext } from "@context/ThemeContext";
 import { menuItems } from "@lib/constants/menuItems";
@@ -26,7 +26,6 @@ const Header: React.FC = () => {
 
   return (
     <nav className="w-full fixed px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[8%] 2xl:px-[12%] py-3 sm:py-4 flex justify-between items-center z-50">
-      <GradientBackdrop />
       <Link to={routesConstants.HOME} className="flex items-center z-[1] group">
         <Img
           src="/icons/favicon.svg"
@@ -39,7 +38,7 @@ const Header: React.FC = () => {
       </Link>
 
       {/* Desktop Navigation */}
-      <ul className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8 rounded-full px-6 lg:px-8 xl:px-12 py-2 lg:py-3 backdrop-blur-md bg-white/50 dark:bg-black/50 shadow-sm z-[1]">
+      <ul className="liquid-glass hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8 rounded-full px-6 lg:px-8 xl:px-12 py-2 lg:py-3 z-[1]">
         {menuItems.map((item) => (
           <li key={item.label} className="relative group">
             <a
@@ -64,9 +63,9 @@ const Header: React.FC = () => {
         >
           <SvgIcon name="github" size="md" className="text-current" />
         </Link>
-        <Link
-          to={routesConstants.ROOT}
-          className="hidden lg:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 transition-all duration-300 hover:border-gray-400 hover:shadow-lg hover:scale-105 active:scale-95 group"
+        <label
+          htmlFor="auth-modal"
+          className="hidden md:flex items-center gap-2 lg:gap-3 px-6 lg:px-10 py-2 lg:py-2.5 text-sm lg:text-base border border-gray-500 rounded-full ml-2 md:ml-3 lg:ml-4 transition-all duration-300 hover:border-gray-400 hover:shadow-lg hover:scale-105 active:scale-95 group cursor-pointer"
         >
           Ingresar
           <SvgIcon
@@ -74,7 +73,7 @@ const Header: React.FC = () => {
             size="sm"
             className="text-current transition-transform duration-300 group-hover:scale-110"
           />
-        </Link>
+        </label>
         <button className="block md:hidden ml-3" onClick={openMenu}>
           <SvgIcon name="menu" size="md" className="text-current" />
         </button>
@@ -95,7 +94,20 @@ const Header: React.FC = () => {
             </a>
           </li>
         ))}
+        <li className="mt-4 pt-4 border-t border-white/20">
+          <label
+            htmlFor="auth-modal"
+            className="flex items-center gap-3 text-white font-semibold cursor-pointer"
+            onClick={closeMenu}
+          >
+            Ingresar
+            <SvgIcon name="arrow-up-right" size="sm" className="text-white" />
+          </label>
+        </li>
       </ul>
+
+      {/* Auth Modal */}
+      <AuthModal />
     </nav>
   );
 };

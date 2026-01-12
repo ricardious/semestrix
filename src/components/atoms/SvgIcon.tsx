@@ -1,4 +1,5 @@
 import { SVGProps } from "react";
+import { twMerge } from "tailwind-merge";
 
 /**
  * Props for the SvgIcon component
@@ -28,7 +29,7 @@ const sizeClasses = {
  * @example
  * // Basic usage
  * <SvgIcon name="home" />
- *
+
  * @example
  * // With size preset
  * <SvgIcon name="user" size="lg" />
@@ -50,7 +51,7 @@ const SvgIcon = ({
   ...props
 }: SvgIconProps) => {
   const sizeClass = sizeClasses[size];
-  const finalClassName = className ? `${sizeClass} ${className}` : sizeClass;
+  const finalClassName = twMerge(sizeClass, className);
 
   return (
     <svg className={finalClassName} aria-hidden={ariaHidden} {...props}>

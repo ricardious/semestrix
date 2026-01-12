@@ -1,5 +1,3 @@
-import React from "react";
-
 interface StepConnectorProps {
   variant?: "blue" | "primary" | "purple" | "green";
   lineHeight?: "sm" | "md" | "lg";

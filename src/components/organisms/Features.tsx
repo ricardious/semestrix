@@ -1,7 +1,7 @@
 import { FEATURES } from "@lib/constants/features";
-import SectionTitle from "@atoms/SectionTitle";
 import FeatureCard from "@molecules/FeatureCard";
 import CTAButton from "@atoms/CTAButton";
+import AnimatedText from "@atoms/AnimatedText";
 
 const Features = () => {
   return (
@@ -12,15 +12,21 @@ const Features = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <SectionTitle className="mb-6">
-            Funciones que potencian tu éxito académico
-          </SectionTitle>
+          <AnimatedText
+            tag="h2"
+            text="Funciones que potencian tu éxito académico"
+            delay={0.1}
+            className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6"
+            variant="title"
+          />
 
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Descubre todas las herramientas que te ayudarán a planificar,
-            organizar y optimizar tu experiencia universitaria de manera
-            inteligente.
-          </p>
+          <AnimatedText
+            tag="p"
+            text="Descubre todas las herramientas que te ayudarán a planificar, organizar y optimizar tu experiencia universitaria de manera inteligente."
+            delay={0.2}
+            className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
+            variant="description"
+          />
         </div>
 
         {/* Features Grid */}
@@ -31,7 +37,7 @@ const Features = () => {
               iconName={feature.iconName}
               title={feature.title}
               description={feature.description}
-              delay={0.1 + index * 0.1}
+              delay={index * 0.1}
             />
           ))}
         </div>
