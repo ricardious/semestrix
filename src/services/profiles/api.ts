@@ -8,7 +8,6 @@ import type {
   ProfileStatus,
   AcademicProfile,
   CreateIdentityRequest,
-  ProfileResponse,
 } from "../../lib/types/api";
 
 /**
