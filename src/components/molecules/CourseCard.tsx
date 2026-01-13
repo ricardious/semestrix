@@ -1,6 +1,7 @@
 import { clsx } from "clsx";
 import Badge from "@atoms/Badge";
 import SvgIcon from "@atoms/SvgIcon";
+import RequirementsTooltip from "@molecules/RequirementsTooltip";
 import { CourseStatus } from "@lib/hooks/useCourseProgress";
 import { CurriculumCourseNode, HistoryItem } from "@lib/types/api";
 
@@ -103,25 +104,16 @@ export default function CourseCard({
           )
         )}
 
-        {/* Lock Icon / Requirements Tooltip placeholder */}
-        {status === "locked" && (
-          <div className="group relative">
-            <SvgIcon
-              name="padlock-square-1"
-              className="text-lg text-base-content/50 dark:text-base-dark-content/50"
-            />
-            {/* Tooltip */}
-            {missingRequirements.length > 0 && (
-              <div className="absolute bottom-full right-0 mb-2 w-48 rounded bg-base-300 p-2 text-[10px] text-base-content shadow-xl z-50 invisible group-hover:visible">
-                <p className="font-bold mb-1">Requisitos faltantes:</p>
-                <ul className="list-disc pl-3 space-y-0.5">
-                  {missingRequirements.map((req, i) => (
-                    <li key={i}>{req}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
+        {/* Lock Icon / Requirements Tooltip - Mobile friendly */}
+        {status === "locked" && missingRequirements.length > 0 && (
+          <RequirementsTooltip missingRequirements={missingRequirements} />
+        )}
+
+        {status === "locked" && missingRequirements.length === 0 && (
+          <SvgIcon
+            name="padlock-square-1"
+            className="text-lg text-base-content/50 dark:text-base-dark-content/50"
+          />
         )}
 
         {/* Warning Icon for Coreqs */}

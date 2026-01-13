@@ -2,7 +2,6 @@ import { useState } from "react";
 import { User, AcademicProfile } from "@lib/types/api";
 import SvgIcon from "@atoms/SvgIcon";
 import { clsx } from "clsx";
-import { signOut } from "@lib/helpers/authActions";
 import { useNeonAuth } from "@lib/hooks/useNeonAuth";
 import { authClient } from "@lib/helpers/auth";
 
@@ -31,14 +30,6 @@ export default function UserProfileCard({
 
   const displayName =
     effectiveUser?.name || effectiveUser?.email?.split("@")[0] || "Estudiante";
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
 
   const handleUpdateName = async () => {
     if (!newName.trim()) {
@@ -191,17 +182,6 @@ export default function UserProfileCard({
               <span>{effectiveUser.email}</span>
             </div>
           )}
-          <div className="flex-1"></div> {/* Spacer */}
-          <button
-            onClick={handleSignOut}
-            className="group flex items-center gap-2 rounded-lg border border-error/20 bg-error/5 px-3 py-1.5 text-xs font-medium text-error/80 transition-all hover:border-error/40 hover:bg-error/10 hover:text-error dark:border-error/30 dark:bg-error/10 dark:text-error/90 dark:hover:bg-error/20"
-          >
-            <SvgIcon
-              name="logout"
-              className="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
-            />
-            <span>Cerrar sesión</span>
-          </button>
         </div>
       </div>
     </div>

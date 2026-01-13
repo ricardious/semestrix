@@ -4,12 +4,13 @@
  * Provides consistent layout structure for all dashboard pages.
  * Includes sidebar navigation, header with user info, and content area.
  */
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { clsx } from "clsx";
 import SvgIcon from "@atoms/SvgIcon";
 import ThemeToggle from "@molecules/ThemeToggle";
 import { useThemeContext } from "@context/ThemeContext";
+import { signOut } from "@lib/helpers/authActions";
 
 interface NavItem {
   to: string;
@@ -40,9 +41,61 @@ export default function DashboardLayout({
 }: DashboardLayoutProps) {
   const location = useLocation();
   const { isDark, toggleDarkMode } = useThemeContext();
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   return (
     <div className="relative min-h-screen bg-base-100 dark:bg-base-dark">
+
+      {/* Sign Out Confirmation Modal */}
+      {showSignOutModal && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setShowSignOutModal(false)}
+          />
+
+          {/* Modal */}
+          <div className="relative z-10 w-full max-w-sm rounded-2xl border border-base-content/10 bg-base-100 p-6 shadow-2xl dark:border-white/10 dark:bg-base-dark">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="rounded-xl bg-error/10 p-3">
+                <SvgIcon name="logout" className="h-6 w-6 text-error" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-base-content dark:text-white">
+                  ¿Cerrar sesión?
+                </h3>
+                <p className="text-sm text-base-content/60 dark:text-white/60">
+                  Tendrás que iniciar sesión de nuevo
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowSignOutModal(false)}
+                className="flex-1 rounded-xl border border-base-content/10 px-4 py-2.5 text-sm font-medium text-base-content/70 transition-colors hover:bg-base-200/50 dark:border-white/10 dark:text-white/70 dark:hover:bg-white/5"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleSignOut}
+                className="flex-1 rounded-xl bg-error px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-error/90"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="relative z-10 flex min-h-screen">
         {/* Sidebar - Desktop */}
@@ -94,12 +147,24 @@ export default function DashboardLayout({
 
           {/* Footer */}
           <div className="border-t border-base-content/5 p-4 dark:border-white/5">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-3">
               <span className="text-xs text-base-content/50 dark:text-white/50">
                 Tema
               </span>
               <ThemeToggle isDark={isDark} onToggle={toggleDarkMode} />
             </div>
+            
+            {/* Sign Out Button */}
+            <button
+              onClick={() => setShowSignOutModal(true)}
+              className="group flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-base-content/70 transition-all hover:bg-error/10 hover:text-error dark:text-white/70 dark:hover:bg-error/20 dark:hover:text-error"
+            >
+              <SvgIcon
+                name="logout"
+                className="h-5 w-5 opacity-70 transition-transform group-hover:-translate-x-0.5"
+              />
+              <span>Cerrar sesión</span>
+            </button>
           </div>
         </aside>
 
@@ -123,6 +188,15 @@ export default function DashboardLayout({
               </Link>
             );
           })}
+          
+          {/* Sign Out Button - Mobile */}
+          <button
+            onClick={() => setShowSignOutModal(true)}
+            className="flex flex-col items-center gap-1 px-4 py-2 text-xs font-medium text-base-content/60 transition-colors hover:text-error dark:text-white/60 dark:hover:text-error"
+          >
+            <SvgIcon name="logout" className="h-5 w-5" />
+            <span>Salir</span>
+          </button>
         </nav>
 
         {/* Main Content Area */}
